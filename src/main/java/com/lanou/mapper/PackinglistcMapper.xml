@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanou.mapper.PackinglistcMapper">
+<cache/>
+  <resultMap id="BaseResultMap" type="com.lanou.entity.Packinglistc">
+  
+    <id column="PACKING_LIST_ID" jdbcType="VARCHAR" property="PACKING_LIST_ID" />
+    <result column="SELLER" jdbcType="VARCHAR" property="SELLER" />
+    <result column="BUYER" jdbcType="VARCHAR" property="BUYER" />
+    <result column="INVOICE_NO" jdbcType="VARCHAR" property="INVOICE_NO" />
+    <result column="INVOICE_DATE" jdbcType="TIMESTAMP" property="INVOICE_DATE" />
+    <result column="MARKS" jdbcType="VARCHAR" property="MARKS" />
+    <result column="DESCRIPTIONS" jdbcType="VARCHAR" property="DESCRIPTIONS" />
+    <result column="EXPORT_IDS" jdbcType="VARCHAR" property="EXPORT_IDS" />
+    <result column="EXPORT_NOS" jdbcType="VARCHAR" property="EXPORT_NOS" />
+    <result column="STATE" jdbcType="DECIMAL" property="STATE" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="CREATE_BY" />
+    <result column="CREATE_DEPT" jdbcType="VARCHAR" property="CREATE_DEPT" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="CREATE_TIME" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PACKING_LIST_ID, SELLER, BUYER, INVOICE_NO, INVOICE_DATE, MARKS, DESCRIPTIONS, EXPORT_IDS, 
+    EXPORT_NOS, STATE, CREATE_BY, CREATE_DEPT, CREATE_TIME
+  </sql>
+  
+  <!-- 查询所有装箱单 -->
+  <select id="selectPackingAll" resultMap="BaseResultMap">
+  
+  	select * from PACKING_LIST_C
+  
+  </select>
+  
+  <!-- 根据装箱单id查询信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PACKING_LIST_C
+    where PACKING_LIST_ID = #{PACKING_LIST_ID,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据装箱单id批量删除信息 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from PACKING_LIST_C
+    where PACKING_LIST_ID in
+    <foreach collection="array" item="id" open="(" close=")" separator="," >
+    #{id}
+    </foreach>
+  </delete>
+  
+  <!-- 根据装箱单id批量修改状态 -->
+  <update id="update" parameterType="java.lang.String">
+  	update PACKING_LIST_C
+    set STATE = '1' where PACKING_LIST_ID in
+  	 <foreach collection="array" item="id" open="(" close=")" separator="," >
+    #{id}
+    </foreach>
+  
+  
+  </update>
+  
+  
+  
+  
+  
+  
+  <insert id="insert" parameterType="com.lanou.entity.Packinglistc">
+    insert into PACKING_LIST_C (PACKING_LIST_ID, SELLER, BUYER, 
+      INVOICE_NO, INVOICE_DATE, MARKS, 
+      DESCRIPTIONS, EXPORT_IDS, EXPORT_NOS, 
+      STATE, CREATE_BY, CREATE_DEPT, 
+      CREATE_TIME)
+    values (#{PACKING_LIST_ID,jdbcType=VARCHAR}, #{SELLER,jdbcType=VARCHAR}, #{BUYER,jdbcType=VARCHAR}, 
+      #{INVOICE_NO,jdbcType=VARCHAR}, #{INVOICE_DATE,jdbcType=TIMESTAMP}, #{MARKS,jdbcType=VARCHAR}, 
+      #{DESCRIPTIONS,jdbcType=VARCHAR}, #{EXPORT_IDS,jdbcType=VARCHAR}, #{EXPORT_NOS,jdbcType=VARCHAR}, 
+      #{STATE,jdbcType=DECIMAL}, #{CREATE_BY,jdbcType=VARCHAR}, #{CREATE_DEPT,jdbcType=VARCHAR}, 
+      #{CREATE_TIME,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 动态添加 -->
+  <insert id="insertSelective" parameterType="com.lanou.entity.Packinglistc">
+       <selectKey keyProperty="PACKING_LIST_ID" 
+    	resultType="java.lang.String" order="BEFORE">
+        select sys_guid() from dual
+    </selectKey>
+    insert into PACKING_LIST_C
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="PACKING_LIST_ID != null">
+        PACKING_LIST_ID,
+      </if>
+      <if test="SELLER != null">
+        SELLER,
+      </if>
+      <if test="BUYER != null">
+        BUYER,
+      </if>
+      <if test="INVOICE_NO != null">
+        INVOICE_NO,
+      </if>
+      <if test="INVOICE_DATE != null">
+        INVOICE_DATE,
+      </if>
+      <if test="MARKS != null">
+        MARKS,
+      </if>
+      <if test="DESCRIPTIONS != null">
+        DESCRIPTIONS,
+      </if>
+      <if test="EXPORT_IDS != null">
+        EXPORT_IDS,
+      </if>
+      <if test="EXPORT_NOS != null">
+        EXPORT_NOS,
+      </if>
+      <if test="STATE != null">
+        STATE,
+      </if>
+      <if test="CREATE_BY != null">
+        CREATE_BY,
+      </if>
+      <if test="CREATE_DEPT != null">
+        CREATE_DEPT,
+      </if>
+      <if test="CREATE_TIME != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="PACKING_LIST_ID != null">
+        #{PACKING_LIST_ID,jdbcType=VARCHAR},
+      </if>
+      <if test="SELLER != null">
+        #{SELLER,jdbcType=VARCHAR},
+      </if>
+      <if test="BUYER != null">
+        #{BUYER,jdbcType=VARCHAR},
+      </if>
+      <if test="INVOICE_NO != null">
+        #{INVOICE_NO,jdbcType=VARCHAR},
+      </if>
+      <if test="INVOICE_DATE != null">
+        #{INVOICE_DATE,jdbcType=TIMESTAMP},
+      </if>
+      <if test="MARKS != null">
+        #{MARKS,jdbcType=VARCHAR},
+      </if>
+      <if test="DESCRIPTIONS != null">
+        #{DESCRIPTIONS,jdbcType=VARCHAR},
+      </if>
+      <if test="EXPORT_IDS != null">
+        #{EXPORT_IDS,jdbcType=VARCHAR},
+      </if>
+      <if test="EXPORT_NOS != null">
+        #{EXPORT_NOS,jdbcType=VARCHAR},
+      </if>
+      <if test="STATE != null">
+        #{STATE,jdbcType=DECIMAL},
+      </if>
+      <if test="CREATE_BY != null">
+        #{CREATE_BY,jdbcType=VARCHAR},
+      </if>
+      <if test="CREATE_DEPT != null">
+        #{CREATE_DEPT,jdbcType=VARCHAR},
+      </if>
+      <if test="CREATE_TIME != null">
+        #{CREATE_TIME,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 动态修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanou.entity.Packinglistc">
+    update PACKING_LIST_C
+    <set>
+      <if test="SELLER != null">
+        SELLER = #{SELLER,jdbcType=VARCHAR},
+      </if>
+      <if test="BUYER != null">
+        BUYER = #{BUYER,jdbcType=VARCHAR},
+      </if>
+      <if test="INVOICE_NO != null">
+        INVOICE_NO = #{INVOICE_NO,jdbcType=VARCHAR},
+      </if>
+      <if test="INVOICE_DATE != null">
+        INVOICE_DATE = #{INVOICE_DATE,jdbcType=TIMESTAMP},
+      </if>
+      <if test="MARKS != null">
+        MARKS = #{MARKS,jdbcType=VARCHAR},
+      </if>
+      <if test="DESCRIPTIONS != null">
+        DESCRIPTIONS = #{DESCRIPTIONS,jdbcType=VARCHAR},
+      </if>
+      <if test="EXPORT_IDS != null">
+        EXPORT_IDS = #{EXPORT_IDS,jdbcType=VARCHAR},
+      </if>
+      <if test="EXPORT_NOS != null">
+        EXPORT_NOS = #{EXPORT_NOS,jdbcType=VARCHAR},
+      </if>
+      <if test="STATE != null">
+        STATE = #{STATE,jdbcType=DECIMAL},
+      </if>
+      <if test="CREATE_BY != null">
+        CREATE_BY = #{CREATE_BY,jdbcType=VARCHAR},
+      </if>
+      <if test="CREATE_DEPT != null">
+        CREATE_DEPT = #{CREATE_DEPT,jdbcType=VARCHAR},
+      </if>
+      <if test="CREATE_TIME != null">
+        CREATE_TIME = #{CREATE_TIME,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where PACKING_LIST_ID = #{PACKING_LIST_ID,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanou.entity.Packinglistc">
+    update PACKING_LIST_C
+    set SELLER = #{SELLER,jdbcType=VARCHAR},
+      BUYER = #{BUYER,jdbcType=VARCHAR},
+      INVOICE_NO = #{INVOICE_NO,jdbcType=VARCHAR},
+      INVOICE_DATE = #{INVOICE_DATE,jdbcType=TIMESTAMP},
+      MARKS = #{MARKS,jdbcType=VARCHAR},
+      DESCRIPTIONS = #{DESCRIPTIONS,jdbcType=VARCHAR},
+      EXPORT_IDS = #{EXPORT_IDS,jdbcType=VARCHAR},
+      EXPORT_NOS = #{EXPORT_NOS,jdbcType=VARCHAR},
+      STATE = #{STATE,jdbcType=DECIMAL},
+      CREATE_BY = #{CREATE_BY,jdbcType=VARCHAR},
+      CREATE_DEPT = #{CREATE_DEPT,jdbcType=VARCHAR},
+      CREATE_TIME = #{CREATE_TIME,jdbcType=TIMESTAMP}
+    where PACKING_LIST_ID = #{PACKING_LIST_ID,jdbcType=VARCHAR}
+  </update>
+</mapper>
